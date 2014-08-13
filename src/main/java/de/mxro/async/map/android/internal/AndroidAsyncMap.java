@@ -58,11 +58,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 		cv.put(key, os.toByteArray());
 		
-		try {
-			os.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		
 	}
 
 	@Override
