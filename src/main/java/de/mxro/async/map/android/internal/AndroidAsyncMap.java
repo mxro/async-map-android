@@ -19,8 +19,11 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private final SQLiteConfiguration conf;
 
-	private final SQLiteDatabase db;
+	
 	private final Serializer<StreamSource, StreamDestination> serializer;
+	
+	
+	private SQLiteDatabase db;
 
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
@@ -75,13 +78,17 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void start(SimpleCallback callback) {
-		// TODO
+		db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), null);
+		
+		
+		callback.onSuccess();
 	}
 
 	@Override
 	public void stop(SimpleCallback callback) {
-		// TODO Auto-generated method stub
-
+		db.close();
+		
+		callback.onSuccess();
 	}
 
 	@Override
