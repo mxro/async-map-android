@@ -1,10 +1,10 @@
 package de.mxro.async.map.android.internal;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import de.mxro.async.callbacks.SimpleCallback;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
@@ -51,22 +51,34 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void putSync(String key, V value) {
-		final ContentValues cv = row(key);
 
+		db.beginTransaction();
+		
+		SQLiteStatement statement = createInsertStatement(key, value);
+		
+		statement.execute();
+		
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		
+	}
+
+	private SQLiteStatement createInsertStatement(String key, V value) {
+		String sql = "INSERT INTO "+ conf.getTableName()+" VALUES (?,?);";
+        SQLiteStatement statement = db.compileStatement(sql);
+		
+        statement.bindString(0, key);
+        
+        
 		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
 		serializer.serialize(value,
 				SerializationJre.createStreamDestination(os));
 
-		cv.put(key, os.toByteArray());
-
-		db.replaceOrThrow(conf.getTableName(), null, cv);
+		statement.bindBlob(1, os.toByteArray());
+		return statement;
 	}
 
-	private ContentValues row(String key) {
-		final ContentValues cv = new ContentValues();
-		cv.put(conf.getKeyColumnName(), key);
-		return cv;
-	}
+	
 
 	@Override
 	public void removeSync(String key) {
