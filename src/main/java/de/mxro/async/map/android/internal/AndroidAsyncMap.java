@@ -52,15 +52,19 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void putSync(String key, V value) {
 
-		db.beginTransaction();
-		
 		SQLiteStatement statement = createInsertStatement(key, value);
 		
+		executeStatementImmidiately(statement);
+		
+	}
+
+	private void executeStatementImmidiately(SQLiteStatement statement) {
+		db.beginTransaction();
+
 		statement.execute();
 		
 		db.setTransactionSuccessful();
 		db.endTransaction();
-		
 	}
 
 	private SQLiteStatement createInsertStatement(String key, V value) {
@@ -83,8 +87,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void removeSync(String key) {
 
-		db.delete(conf.getTableName(), conf.getKeyColumnName() + " = ?",
-				new String[] { key });
+		String sql = "DELETE FROM " + conf.getTableName() + " WHERE "+conf.getKeyColumnName()+" = ?";
 
 	}
 
