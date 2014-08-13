@@ -5,7 +5,7 @@ import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.operations.MapOperation;
 
-public class AndroidAsyncMap<String, V> implements AsyncMap<String, V> {
+public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
