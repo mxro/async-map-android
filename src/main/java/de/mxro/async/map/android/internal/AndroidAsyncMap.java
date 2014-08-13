@@ -1,5 +1,6 @@
 package de.mxro.async.map.android.internal;
 
+import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.callbacks.SimpleCallback;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
@@ -7,6 +8,8 @@ import de.mxro.async.map.operations.MapOperation;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
+	private final SQLiteDatabase db;
+	
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
 		// TODO Auto-generated method stub
