@@ -55,7 +55,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 				SerializationJre.createStreamDestination(os));
 
 		cv.put(key, os.toByteArray());
-		
+
 		db.replaceOrThrow(conf.getTableName(), null, cv);
 	}
 
@@ -67,9 +67,9 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void removeSync(String key) {
-		final ContentValues cv = row(key);
-		
-		db.delete(conf.getTableName(), conf.getKeyColumnName()+" = ?", whereArgs)
+
+		db.delete(conf.getTableName(), conf.getKeyColumnName() + " = ?",
+				new String[] { key });
 
 	}
 
