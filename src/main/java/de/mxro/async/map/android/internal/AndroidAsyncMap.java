@@ -145,4 +145,13 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	}
 
+	public AndroidAsyncMap(SQLiteConfiguration conf,
+			Serializer<StreamSource, StreamDestination> serializer) {
+		super();
+		this.conf = conf;
+		this.serializer = serializer;
+	}
+	
+	
+
 }
