@@ -58,7 +58,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 		cv.put(key, os.toByteArray());
 		
-		
+		db.replaceOrThrow(conf.getTableName(), null, cv);
 	}
 
 	@Override
