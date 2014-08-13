@@ -45,8 +45,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public V getSync(String key) {
 
-		SQLiteStatement statement = ;
-		executeQueryImmidiately(createSelectStatement(key));
+		
+		executeQueryImmidiately(createSelectStatement(), key);
 		
 		statement.
 
@@ -55,7 +55,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	
 
-	private String createSelectStatement(String key) {
+	private String createSelectStatement() {
 		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
 				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
 				+ " WHERE " + conf.getKeyColumnName() + " = ?";
