@@ -3,7 +3,6 @@ package de.mxro.async.map.android.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -27,19 +26,22 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
-		// TODO Auto-generated method stub
+		putSync(key, value);
+
+		this.commit(callback);
 
 	}
 
 	@Override
 	public void get(String key, ValueCallback<V> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(this.getSync(key));
 	}
 
 	@Override
 	public void remove(String key, SimpleCallback callback) {
-		// TODO Auto-generated method stub
+		removeSync(key);
+
+		this.commit(callback);
 
 	}
 
@@ -135,13 +137,11 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void commit(SimpleCallback callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess();
 	}
 
 	@Override
 	public void performOperation(MapOperation operation) {
-		// TODO Auto-generated method stub
 
 	}
 
