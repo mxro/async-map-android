@@ -288,6 +288,17 @@
 		</extensions>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>android.support-mvn-repo</id>
+			<url>https://raw.github.com/kmchugh/android.support/mvn-repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<distributionManagement>
 		<repository>
 			<id>appjangle-releases</id>
