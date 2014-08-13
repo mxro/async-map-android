@@ -1,14 +1,22 @@
 package de.mxro.async.map.android.internal;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.callbacks.SimpleCallback;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
+import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.async.map.operations.MapOperation;
+import de.mxro.serialization.Serializer;
+import de.mxro.serialization.jre.StreamDestination;
+import de.mxro.serialization.jre.StreamSource;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
+	private final SQLiteConfiguration conf;
+	
 	private final SQLiteDatabase db;
+	private final Serializer<StreamSource, StreamDestination> serializer;
 	
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
@@ -36,8 +44,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void putSync(String key, V value) {
-		// TODO Auto-generated method stub
-		
+		 final ContentValues cv = new ContentValues();
+		 
+		 cv.put(conf.getKeyColumnName(), k);
+		 
 	}
 
 	@Override
