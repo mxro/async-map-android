@@ -1,5 +1,6 @@
 package de.mxro.async.map.android.internal;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import android.content.ContentValues;
@@ -42,24 +43,23 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public V getSync(String key) {
 
-		
-		executeQueryImmidiately(createSelectStatement(), key);
-		
-		statement.
+		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
-		return null;
+		Object object = serializer.deserialize(SerializationJre
+				.createStreamSource(new ByteArrayInputStream(data)));
+
+		return (V) object;
 	}
-
-	
 
 	private String createSelectStatement() {
 		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
 				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
 				+ " WHERE " + conf.getKeyColumnName() + " = ?";
-		
+
 		return sql;
 	}
 
@@ -73,12 +73,12 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
-		Cursor query = db.rawQuery(sql, new String[] {key});
+		Cursor query = db.rawQuery(sql, new String[] { key });
 		byte[] data = query.getBlob(1);
 		query.close();
 		return data;
 	}
-	
+
 	private void executeStatementImmidiately(SQLiteStatement statement) {
 		db.beginTransaction();
 
