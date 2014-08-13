@@ -156,10 +156,14 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	public AndroidAsyncMap(SQLiteConfiguration conf,
-			Serializer<StreamSource, StreamDestination> serializer) {
+			Serializer<StreamSource, StreamDestination> serializer,
+			SQLiteDatabase injectedDb) {
 		super();
 		this.conf = conf;
 		this.serializer = serializer;
+		this.injectedDb = injectedDb;
 	}
+
+	
 
 }
