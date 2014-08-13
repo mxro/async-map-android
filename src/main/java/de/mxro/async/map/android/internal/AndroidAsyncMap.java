@@ -22,7 +22,11 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private final Serializer<StreamSource, StreamDestination> serializer;
 
+	private final SQLiteDatabase injectedDb;
+	
 	private SQLiteDatabase db;
+
+	
 
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
@@ -123,14 +127,20 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void start(SimpleCallback callback) {
-		db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), null);
-
+		if (injectedDb == null) {
+			db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(),
+					null);
+		} else {
+			db = injectedDb;
+		}
 		callback.onSuccess();
 	}
 
 	@Override
 	public void stop(SimpleCallback callback) {
-		db.close();
+		if (injectedDb == null) {
+			db.close();
+		}
 
 		callback.onSuccess();
 	}
@@ -151,7 +161,5 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		this.conf = conf;
 		this.serializer = serializer;
 	}
-	
-	
 
 }
