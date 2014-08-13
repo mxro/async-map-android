@@ -19,10 +19,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private final SQLiteConfiguration conf;
 
-	
 	private final Serializer<StreamSource, StreamDestination> serializer;
-	
-	
+
 	private SQLiteDatabase db;
 
 	@Override
@@ -53,27 +51,26 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	public void putSync(String key, V value) {
 
 		SQLiteStatement statement = createInsertStatement(key, value);
-		
+
 		executeStatementImmidiately(statement);
-		
+
 	}
 
 	private void executeStatementImmidiately(SQLiteStatement statement) {
 		db.beginTransaction();
 
 		statement.execute();
-		
+
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
 
 	private SQLiteStatement createInsertStatement(String key, V value) {
-		String sql = "INSERT INTO "+ conf.getTableName()+" VALUES (?,?);";
-        SQLiteStatement statement = db.compileStatement(sql);
-		
-        statement.bindString(0, key);
-        
-        
+		String sql = "INSERT INTO " + conf.getTableName() + " VALUES (?,?);";
+		SQLiteStatement statement = db.compileStatement(sql);
+
+		statement.bindString(0, key);
+
 		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
 		serializer.serialize(value,
 				SerializationJre.createStreamDestination(os));
@@ -82,27 +79,34 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		return statement;
 	}
 
-	
-
 	@Override
 	public void removeSync(String key) {
 
-		String sql = "DELETE FROM " + conf.getTableName() + " WHERE "+conf.getKeyColumnName()+" = ?";
+		executeStatementImmidiately(createRemoveStatement(key));
 
+	}
+
+	private SQLiteStatement createRemoveStatement(String key) {
+		String sql = "DELETE FROM " + conf.getTableName() + " WHERE "
+				+ conf.getKeyColumnName() + " = ?";
+		SQLiteStatement statement = db.compileStatement(sql);
+
+		statement.bindString(0, key);
+
+		return statement;
 	}
 
 	@Override
 	public void start(SimpleCallback callback) {
 		db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), null);
-		
-		
+
 		callback.onSuccess();
 	}
 
 	@Override
 	public void stop(SimpleCallback callback) {
 		db.close();
-		
+
 		callback.onSuccess();
 	}
 
