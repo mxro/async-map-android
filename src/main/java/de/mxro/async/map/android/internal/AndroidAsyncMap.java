@@ -43,7 +43,11 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public V getSync(String key) {
-		// TODO Auto-generated method stub
+
+		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
+				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
+				+ " WHERE " + conf.getKeyColumnName() + " = ?";
+
 		return null;
 	}
 
