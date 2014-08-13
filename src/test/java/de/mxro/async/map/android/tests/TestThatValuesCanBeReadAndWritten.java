@@ -13,7 +13,7 @@ public class TestThatValuesCanBeReadAndWritten {
 	
 	@Test
 	  public void clickingButton_shouldChangeResultsViewText() throws Exception {
-	    Activity activity = Robolectric.buildActivity(TestThatValuesCanBeReadAndWritten.class).create().get();
+	    TestActivity activity = Robolectric.buildActivity(TestActivity.class).create().get();
 	}
 	
 }
