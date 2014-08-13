@@ -3,6 +3,7 @@ package de.mxro.async.map.android.internal;
 import java.io.ByteArrayOutputStream;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import de.mxro.async.callbacks.SimpleCallback;
@@ -44,23 +45,22 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public V getSync(String key) {
 
-		SQLiteStatement statement = createSelectStatement(key);
-		executeStatementImmidiately(statement);
-
+		SQLiteStatement statement = ;
+		executeQueryImmidiately(createSelectStatement(key));
 		
+		statement.
 
 		return null;
 	}
 
-	private SQLiteStatement createSelectStatement(String key) {
+	
+
+	private String createSelectStatement(String key) {
 		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
 				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
 				+ " WHERE " + conf.getKeyColumnName() + " = ?";
-		SQLiteStatement statement = db.compileStatement(sql);
-
-		statement.bindString(0, key);
 		
-		return statement;
+		return sql;
 	}
 
 	@Override
@@ -72,6 +72,13 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	}
 
+	private byte[] executeQueryImmidiately(String sql, String key) {
+		Cursor query = db.rawQuery(sql, new String[] {key});
+		byte[] data = query.getBlob(1);
+		query.close();
+		return data;
+	}
+	
 	private void executeStatementImmidiately(SQLiteStatement statement) {
 		db.beginTransaction();
 
