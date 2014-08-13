@@ -8,4 +8,6 @@ public interface SQLiteConfiguration {
 	
 	public String getKeyColumnName();
 	
+	public String getValueColumnName();
+	
 }
