@@ -48,9 +48,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void putSync(String key, V value) {
-		final ContentValues cv = new ContentValues();
-
-		cv.put(conf.getKeyColumnName(), key);
+		final ContentValues cv = extracted(key);
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
 		serializer.serialize(value,
@@ -61,9 +59,15 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		db.replaceOrThrow(conf.getTableName(), null, cv);
 	}
 
+	private ContentValues extracted(String key) {
+		final ContentValues cv = new ContentValues();
+		cv.put(conf.getKeyColumnName(), key);
+		return cv;
+	}
+
 	@Override
 	public void removeSync(String key) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
