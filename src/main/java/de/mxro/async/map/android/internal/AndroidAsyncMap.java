@@ -75,8 +75,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void start(SimpleCallback callback) {
-		// TODO Auto-generated method stub
-
+		// TODO
 	}
 
 	@Override
