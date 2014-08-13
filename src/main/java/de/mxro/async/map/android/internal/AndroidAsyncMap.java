@@ -44,11 +44,23 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public V getSync(String key) {
 
+		SQLiteStatement statement = createSelectStatement(key);
+		executeStatementImmidiately(statement);
+
+		
+
+		return null;
+	}
+
+	private SQLiteStatement createSelectStatement(String key) {
 		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
 				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
 				+ " WHERE " + conf.getKeyColumnName() + " = ?";
+		SQLiteStatement statement = db.compileStatement(sql);
 
-		return null;
+		statement.bindString(0, key);
+		
+		return statement;
 	}
 
 	@Override
