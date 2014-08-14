@@ -38,7 +38,7 @@ public class AsyncMapAndorid {
 
 			@Override
 			public String getKeyColumnName() {
-				return "id";
+				return "key";
 			}
 
 			@Override
