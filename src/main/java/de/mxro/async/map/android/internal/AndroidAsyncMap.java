@@ -81,11 +81,12 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
+		
 		Cursor query = db.query(
 				conf.getTableName(),
 				new String[] { conf.getKeyColumnName(),
 						conf.getValueColumnName() }, conf.getKeyColumnName()
-						+ "=?", new String[] { key}, null, null, null );
+						+ "=?", new String[] { key }, null, null, null );
 		if (query.getCount() == 0) {
 			return null;
 		}
