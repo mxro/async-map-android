@@ -1,8 +1,5 @@
 package de.mxro.async.map.android;
 
-import java.sql.CallableStatement;
-import java.sql.SQLException;
-
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.internal.AndroidAsyncMap;
