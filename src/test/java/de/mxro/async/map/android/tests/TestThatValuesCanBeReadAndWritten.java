@@ -1,5 +1,7 @@
 package de.mxro.async.map.android.tests;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -16,8 +18,6 @@ public class TestThatValuesCanBeReadAndWritten {
 
 	@Test
 	public void test() throws Exception {
-		TestActivity activity = Robolectric.buildActivity(TestActivity.class)
-				.create().get();
 
 		SQLiteConfiguration conf = AsyncMapAndorid.createDefaultConfiguration();
 		AsyncMap<String, Object> map = AsyncMapAndorid.createMap(conf,
@@ -27,6 +27,11 @@ public class TestThatValuesCanBeReadAndWritten {
 		map.putSync("one", 1);
 
 		map.putSync("two", 2);
+		
+		Assert.assertEquals(1, map.getSync("one"));
+		Assert.assertEquals(2, map.getSync("two"));
+		
+		
 
 	}
 }
