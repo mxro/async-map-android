@@ -51,7 +51,7 @@ public class AsyncMapAndorid {
 	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName()
-				+ "(ID VARCHAR(512) PRIMARY KEY, VALUE BLOB);");
+				+ "("+conf.getKeyColumnName()+" VARCHAR(512) PRIMARY KEY, "+conf.getValueColumnName()+" BLOB)");
 
 	}
 
