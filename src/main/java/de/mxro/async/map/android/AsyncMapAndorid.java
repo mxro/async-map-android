@@ -1,5 +1,8 @@
 package de.mxro.async.map.android;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.internal.AndroidAsyncMap;
@@ -22,31 +25,34 @@ public class AsyncMapAndorid {
 
 	public static SQLiteConfiguration createDefaultConfiguration() {
 		return new SQLiteConfiguration() {
-			
+
 			@Override
 			public String getValueColumnName() {
 				return "value";
 			}
-			
+
 			@Override
 			public String getTableName() {
 				return "data";
 			}
-			
+
 			@Override
 			public String getKeyColumnName() {
 				return "id";
 			}
-			
+
 			@Override
 			public String getDatabasePath() {
 				return "db";
 			}
 		};
 	}
-	
+
 	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
-		
+
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName()
+				+ "(ID VARCHAR(512) PRIMARY KEY, VALUE BLOB);");
+
 	}
-	
+
 }
