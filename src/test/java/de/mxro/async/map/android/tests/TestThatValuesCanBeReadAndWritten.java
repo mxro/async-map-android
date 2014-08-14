@@ -44,8 +44,12 @@ public class TestThatValuesCanBeReadAndWritten {
 		});
 
 		map.putSync("one", 1);
-
+		
 		map.putSync("two", 2);
+		
+		map.putSync("three", 3);
+		
+		map.removeSync("three");
 
 		Assert.assertEquals(1, map.getSync("one"));
 		Assert.assertEquals(2, map.getSync("two"));

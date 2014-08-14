@@ -135,7 +135,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 				+ conf.getKeyColumnName() + " = ?";
 		SQLiteStatement statement = db.compileStatement(sql);
 
-		statement.bindString(0, key);
+		statement.bindString(1, key);
 
 		return statement;
 	}
