@@ -9,6 +9,11 @@ import de.mxro.serialization.jre.StreamSource;
 
 public class AsyncMapAndorid {
 
+	/**
+	 * The length of keys used by the engine.
+	 */
+	public static int KEY_LENGTH = 512;
+
 	public static <V> AsyncMap<String, V> createMap(SQLiteConfiguration conf,
 			Serializer<StreamSource, StreamDestination> serializer,
 			SQLiteDatabase injectedDb) {
@@ -47,8 +52,9 @@ public class AsyncMapAndorid {
 
 	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName()
-				+ "("+conf.getKeyColumnName()+" VARCHAR(512) PRIMARY KEY, "+conf.getValueColumnName()+" BLOB)");
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName() + "("
+				+ conf.getKeyColumnName() + " VARCHAR("+String.valueOf(KEY_LENGTH)+") PRIMARY KEY, "
+				+ conf.getValueColumnName() + " BLOB)");
 
 	}
 
