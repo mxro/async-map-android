@@ -2,6 +2,7 @@ package de.mxro.async.map.android.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -148,7 +149,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void start(SimpleCallback callback) {
 		if (injectedDb == null) {
-			db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(),
+			db = SQLiteDatabase.openOrCreateDatabase(new File(conf.getDatabasePath()),
 					null);
 		} else {
 			db = injectedDb;

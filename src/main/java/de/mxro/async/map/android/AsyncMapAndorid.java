@@ -1,5 +1,7 @@
 package de.mxro.async.map.android;
 
+import java.io.File;
+
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.internal.AndroidAsyncMap;
@@ -55,7 +57,7 @@ public class AsyncMapAndorid {
 	}
 
 	public static SQLiteDatabase assertDatabase(SQLiteConfiguration conf) {
-		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), null);
+		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(new File(conf.getDatabasePath()), null);
 		return db;
 	}
 	
