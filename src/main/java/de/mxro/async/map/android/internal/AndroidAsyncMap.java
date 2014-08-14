@@ -114,7 +114,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private SQLiteStatement createInsertStatement(String key, V value) {
-		String sql = "INSERT INTO " + conf.getTableName() + " VALUES (?, ?)";
+		String sql = "INSERT INTO " + conf.getTableName() + " ("+conf.getKeyColumnName()+","+conf.getValueColumnName()+") VALUES (?, ?)";
 		SQLiteStatement statement = db.compileStatement(sql);
 
 		statement.bindString(1, key);
@@ -123,7 +123,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		serializer.serialize(value,
 				SerializationJre.createStreamDestination(os));
 
-		statement.bindBlob(1, os.toByteArray());
+		statement.bindBlob(2, os.toByteArray());
 		return statement;
 	}
 
