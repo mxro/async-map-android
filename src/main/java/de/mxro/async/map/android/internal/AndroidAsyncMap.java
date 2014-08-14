@@ -85,7 +85,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 				conf.getTableName(),
 				new String[] { conf.getKeyColumnName(),
 						conf.getValueColumnName() }, conf.getKeyColumnName()
-						+ "=?",  key , null);
+						+ "=?", new String[] { key}, null, null, null );
 		if (query.getCount() == 0) {
 			return null;
 		}
