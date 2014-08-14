@@ -50,8 +50,9 @@ public class AsyncMapAndorid {
 		};
 	}
 
-	public static void assertDatabase(SQLiteConfiguration conf) {
-		SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), factory)
+	public static SQLiteDatabase assertDatabase(SQLiteConfiguration conf) {
+		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), null);
+		return db;
 	}
 	
 	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
