@@ -19,7 +19,7 @@ import de.mxro.fn.Success;
 import de.mxro.serialization.jre.SerializationJre;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
+@Config(manifest = Config.NONE)
 public class TestThatValuesCanBeReadAndWritten {
 
 	@Test
@@ -29,6 +29,14 @@ public class TestThatValuesCanBeReadAndWritten {
 		final AsyncMap<String, Object> map = AsyncMapAndorid.createMap(conf,
 				SerializationJre.newJavaSerializer(),
 				ShadowSQLiteDatabase.create(null));
+
+		AsyncJre.waitFor(new Deferred<Success>() {
+
+			@Override
+			public void get(ValueCallback<Success> callback) {
+				map.start(Async.wrap(callback));
+			}
+		});
 
 		map.putSync("one", 1);
 
