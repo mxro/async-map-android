@@ -95,7 +95,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private SQLiteStatement createInsertStatement(String key, V value) {
-		String sql = "INSERT INTO " + conf.getTableName() + " VALUES (?,?);";
+		String sql = "INSERT INTO " + conf.getTableName() + " VALUES (?, ?)";
 		SQLiteStatement statement = db.compileStatement(sql);
 
 		statement.bindString(0, key);
