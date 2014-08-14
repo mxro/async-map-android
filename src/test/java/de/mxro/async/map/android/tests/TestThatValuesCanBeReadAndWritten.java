@@ -59,6 +59,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		while (!cursor.isAfterLast()) {
 			
 			System.out.println(Arrays.toString(cursor.getBlob(0)));
+			System.out.println(cursor.getString(1));
 			cursor.moveToNext();
 		}
 		
