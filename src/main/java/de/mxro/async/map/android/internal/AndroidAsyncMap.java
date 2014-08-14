@@ -10,6 +10,7 @@ import de.mxro.async.callbacks.SimpleCallback;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.SQLiteConfiguration;
+import de.mxro.async.map.operations.ClearCacheOperation;
 import de.mxro.async.map.operations.MapOperation;
 import de.mxro.serialization.Serializer;
 import de.mxro.serialization.jre.SerializationJre;
@@ -167,6 +168,9 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void performOperation(MapOperation operation) {
 		// none supported
+		if (operation instanceof ClearCacheOperation) {
+			SQLiteDatabase.releaseMemory();
+		}
 	}
 
 	public AndroidAsyncMap(SQLiteConfiguration conf,
