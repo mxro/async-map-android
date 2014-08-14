@@ -45,4 +45,8 @@ public class AsyncMapAndorid {
 		};
 	}
 	
+	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
+		
+	}
+	
 }
