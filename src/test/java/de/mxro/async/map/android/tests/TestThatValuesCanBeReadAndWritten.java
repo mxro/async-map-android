@@ -8,6 +8,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSQLiteDatabase;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.Async;
 import de.mxro.async.Deferred;
@@ -48,6 +49,13 @@ public class TestThatValuesCanBeReadAndWritten {
 		map.putSync("two", 2);
 		
 		map.putSync("three", 3);
+		
+		Cursor cursor = db.rawQuery("SELECT * FROM data", new String[] {});
+		
+		while (!cursor.isAfterLast()) {
+			System.out.println(cursor.getString(1));
+			cursor.moveToNext();
+		}
 		
 		map.removeSync("three");
 
