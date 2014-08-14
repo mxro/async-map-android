@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteStatement;
 import de.mxro.async.callbacks.SimpleCallback;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
+import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.async.map.operations.ClearCacheOperation;
 import de.mxro.async.map.operations.MapOperation;
@@ -74,7 +75,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void putSync(String key, V value) {
-
+		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
+		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
 		executeStatementImmidiately(statement);
