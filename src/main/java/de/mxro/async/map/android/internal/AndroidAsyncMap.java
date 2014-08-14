@@ -80,7 +80,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
 		Cursor query = db.rawQuery(sql, new String[] { key });
-		byte[] data = query.getBlob(1);
+		byte[] data = query.getBlob(2);
 		query.close();
 		return data;
 	}
@@ -98,7 +98,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		String sql = "INSERT INTO " + conf.getTableName() + " VALUES (?, ?)";
 		SQLiteStatement statement = db.compileStatement(sql);
 
-		statement.bindString(0, key);
+		statement.bindString(1, key);
 
 		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
 		serializer.serialize(value,
