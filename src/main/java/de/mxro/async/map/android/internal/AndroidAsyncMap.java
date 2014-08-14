@@ -103,8 +103,12 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	private void executeStatementImmidiately(SQLiteStatement statement) {
 		db.beginTransaction();
 
-		statement.execute();
+		int rowsAffected = statement.executeUpdateDelete();
 
+		if (rowsAffected != 1) {
+			throw new RuntimeException("No rows could be found for query.");
+		}
+		
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
