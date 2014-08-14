@@ -19,6 +19,7 @@ import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.fn.Success;
 import de.mxro.serialization.jre.SerializationJre;
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -50,14 +51,14 @@ public class TestThatValuesCanBeReadAndWritten {
 		
 		map.putSync("three", 3);
 		
-		Cursor cursor = db.rawQuery("SELECT * FROM data", new String[] {});
+		Cursor cursor = db.rawQuery("SELECT key, value FROM data", new String[] {});
 		
 		cursor.moveToFirst();
 		System.out.println(cursor.getColumnName(0));
 		System.out.println(cursor.getColumnName(1));
 		while (!cursor.isAfterLast()) {
 			
-			System.out.println(cursor.getString(1));
+			System.out.println(Arrays.toString(cursor.getBlob(0)));
 			cursor.moveToNext();
 		}
 		
