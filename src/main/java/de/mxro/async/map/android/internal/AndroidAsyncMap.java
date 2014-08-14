@@ -80,7 +80,9 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
 		Cursor query = db.rawQuery(sql, new String[] { key });
+		System.out.println("count "+query.getCount());
 		System.out.println(query.getColumnCount());
+		query.moveToFirst();
 		byte[] data = query.getBlob(1);
 		query.close();
 		return data;
