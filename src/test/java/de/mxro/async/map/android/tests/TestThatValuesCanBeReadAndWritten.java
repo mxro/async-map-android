@@ -52,8 +52,9 @@ public class TestThatValuesCanBeReadAndWritten {
 		
 		Cursor cursor = db.rawQuery("SELECT * FROM data", new String[] {});
 		
+		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			System.out.println(cursor.getString(0));
+			System.out.println(cursor.getString(1));
 			cursor.moveToNext();
 		}
 		
