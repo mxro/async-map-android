@@ -6,7 +6,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowSQLiteDatabase;
 
-import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
@@ -22,8 +21,10 @@ public class TestThatValuesCanBeReadAndWritten {
 	    
 	    
 	    SQLiteConfiguration conf = AsyncMapAndorid.createDefaultConfiguration(); 
-		AsyncMap<String, Object> test = AsyncMapAndorid.createMap(conf, SerializationJre.newJavaSerializer(),  ShadowSQLiteDatabase.create(null));
+		AsyncMap<String, Object> map = AsyncMapAndorid.createMap(conf, SerializationJre.newJavaSerializer(),  ShadowSQLiteDatabase.create(null));
 	    		
+		
+
 	    
 	}
 	
