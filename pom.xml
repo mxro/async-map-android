@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<groupId>de.mxro.async.map.android</groupId>
 	<artifactId>async-map-android</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<description>Implementation using Android SQLite interface for async-map framework.</description>
 	<url>https://github.com/mxro/async-map-android</url>
 	<properties>
@@ -302,7 +302,14 @@
 			<url>${repos.appjangle-snapshots}</url>
 		</snapshotRepository>
 	</distributionManagement>
-
+		
+		<repositories>
+		<repository>
+			<id>Appjangle Releases</id>
+			<url>http://maven.appjangle.com/appjangle/releases</url>
+		</repository>
+	</repositories>
+		
 	<developers>
 		<developer>
 			<id>mxro</id>
