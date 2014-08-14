@@ -23,10 +23,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	private final Serializer<StreamSource, StreamDestination> serializer;
 
 	private final SQLiteDatabase injectedDb;
-	
-	private SQLiteDatabase db;
 
-	
+	private SQLiteDatabase db;
 
 	@Override
 	public void put(String key, V value, SimpleCallback callback) {
@@ -58,7 +56,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		if (data == null) {
 			return null;
 		}
-		
+
 		Object object = serializer.deserialize(SerializationJre
 				.createStreamSource(new ByteArrayInputStream(data)));
 
@@ -83,12 +81,16 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
-		Cursor query = db.rawQuery(sql, new String[] { key });
+		Cursor query = db.query(
+				conf.getTableName(),
+				new String[] { conf.getKeyColumnName(),
+						conf.getValueColumnName() }, conf.getKeyColumnName()
+						+ "=?",  key , null);
 		if (query.getCount() == 0) {
 			return null;
 		}
-		
-		System.out.println("count "+query.getCount());
+
+		System.out.println("count " + query.getCount());
 		System.out.println(query.getColumnCount());
 		query.moveToFirst();
 		byte[] data = query.getBlob(1);
@@ -174,7 +176,5 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		this.serializer = serializer;
 		this.injectedDb = injectedDb;
 	}
-
-	
 
 }
