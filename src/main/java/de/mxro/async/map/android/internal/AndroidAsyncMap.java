@@ -55,6 +55,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
+		if (data == null) {
+			return null;
+		}
+		
 		Object object = serializer.deserialize(SerializationJre
 				.createStreamSource(new ByteArrayInputStream(data)));
 
@@ -80,6 +84,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	private byte[] executeQueryImmidiately(String sql, String key) {
 		Cursor query = db.rawQuery(sql, new String[] { key });
+		if (query.getCount() == 0) {
+			return null;
+		}
+		
 		System.out.println("count "+query.getCount());
 		System.out.println(query.getColumnCount());
 		query.moveToFirst();
