@@ -53,6 +53,7 @@ public class TestThatValuesCanBeReadAndWritten {
 
 		Assert.assertEquals(1, map.getSync("one"));
 		Assert.assertEquals(2, map.getSync("two"));
+		Assert.assertEquals(null, map.getSync("three"));
 
 		AsyncJre.waitFor(new Deferred<Success>() {
 
