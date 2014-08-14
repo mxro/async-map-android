@@ -65,6 +65,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		return (V) object;
 	}
 
+	
 	private String createSelectStatement() {
 		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
 				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
