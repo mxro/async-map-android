@@ -45,11 +45,15 @@ public class AsyncMapAndorid {
 
 			@Override
 			public String getDatabasePath() {
-				return "db";
+				return "cache.db";
 			}
 		};
 	}
 
+	public static void assertDatabase(SQLiteConfiguration conf) {
+		SQLiteDatabase.openOrCreateDatabase(conf.getDatabasePath(), factory)
+	}
+	
 	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName() + "("
