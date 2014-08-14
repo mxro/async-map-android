@@ -20,4 +20,29 @@ public class AsyncMapAndorid {
 		return createMap(conf, serializer, null);
 	}
 
+	public static SQLiteConfiguration createDefaultConfiguration() {
+		return new SQLiteConfiguration() {
+			
+			@Override
+			public String getValueColumnName() {
+				return "value";
+			}
+			
+			@Override
+			public String getTableName() {
+				return "data";
+			}
+			
+			@Override
+			public String getKeyColumnName() {
+				return "id";
+			}
+			
+			@Override
+			public String getDatabasePath() {
+				return "db";
+			}
+		};
+	}
+	
 }
