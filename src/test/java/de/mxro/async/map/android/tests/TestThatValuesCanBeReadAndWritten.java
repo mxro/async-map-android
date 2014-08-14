@@ -8,7 +8,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSQLiteDatabase;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.Async;
 import de.mxro.async.Deferred;
@@ -19,7 +18,6 @@ import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.fn.Success;
 import de.mxro.serialization.jre.SerializationJre;
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -49,20 +47,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		
 		map.putSync("two", 2);
 		
-		map.putSync("three", 3);
-		
-		Cursor cursor = db.rawQuery("SELECT key, value FROM data", new String[] {});
-		
-		cursor.moveToFirst();
-		System.out.println(cursor.getColumnName(0));
-		System.out.println(cursor.getColumnName(1));
-		while (!cursor.isAfterLast()) {
-			
-			
-			System.out.println(cursor.getString(0));
-			System.out.println(Arrays.toString(cursor.getBlob(1)));
-			cursor.moveToNext();
-		}
+		map.putSync("three", 3);	
 		
 		map.removeSync("three");
 
@@ -73,7 +58,6 @@ public class TestThatValuesCanBeReadAndWritten {
 
 			@Override
 			public void get(ValueCallback<Success> callback) {
-				System.out.println(map.getSync("two"));
 				map.stop(Async.wrap(callback));
 			}
 		});

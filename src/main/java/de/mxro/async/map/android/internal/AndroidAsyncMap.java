@@ -91,9 +91,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		if (query.getCount() == 0) {
 			return null;
 		}
-
-		System.out.println("count " + query.getCount());
-		System.out.println(query.getColumnCount());
+		
 		query.moveToFirst();
 		byte[] data = query.getBlob(1);
 		query.close();
