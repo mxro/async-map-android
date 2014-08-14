@@ -26,8 +26,8 @@ public class TestThatValuesCanBeReadAndWritten {
 	@Test
 	public void test() throws Exception {
 
-		SQLiteConfiguration conf = AsyncMapAndorid.createDefaultConfiguration();
-		SQLiteDatabase db = ShadowSQLiteDatabase.create(null);
+		final SQLiteConfiguration conf = AsyncMapAndorid.createDefaultConfiguration();
+		final SQLiteDatabase db = ShadowSQLiteDatabase.create(null);
 		
 		AsyncMapAndorid.assertTable(db, conf);
 		
@@ -60,6 +60,7 @@ public class TestThatValuesCanBeReadAndWritten {
 			@Override
 			public void get(ValueCallback<Success> callback) {
 				map.stop(Async.wrap(callback));
+				db.close();
 			}
 		});
 
