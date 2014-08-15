@@ -53,7 +53,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public V getSync(String key) {
-		System.out.println("get "+key);
+		
 		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
 		if (data == null) {
@@ -78,6 +78,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void putSync(String key, V value) {
 		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
+		
+		System.out.println("put "+key);
 		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
@@ -140,8 +142,6 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void removeSync(String key) {
-
-		System.out.println("remove "+key);
 		
 		executeUpdateOrDeleteStatementImmidiately(createRemoveStatement(key));
 
