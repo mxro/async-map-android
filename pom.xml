@@ -63,6 +63,7 @@
 			<scope>test</scope>
 		</dependency>
 
+
 	</dependencies>
 
 
@@ -305,8 +306,8 @@
 			<url>${repos.appjangle-snapshots}</url>
 		</snapshotRepository>
 	</distributionManagement>
-		
-		
+
+
 	<developers>
 		<developer>
 			<id>mxro</id>
