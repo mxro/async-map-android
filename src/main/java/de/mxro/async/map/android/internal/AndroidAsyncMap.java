@@ -81,7 +81,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
-		executeUpdateOrDeleteStatementImmidiately(statement);
+		executeInsertStatementImmidiately(statement);
 
 	}
 
@@ -111,6 +111,15 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 			throw new RuntimeException("No rows could be found for query "+statement.toString());
 		}
 		
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
+	
+	private void executeInsertStatementImmidiately(SQLiteStatement statement) {
+		db.beginTransaction();
+
+		statement.executeInsert();
+
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
