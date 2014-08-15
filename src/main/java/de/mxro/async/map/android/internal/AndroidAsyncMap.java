@@ -54,6 +54,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public V getSync(String key) {
 		
+		System.out.println("get "+key);
+		
 		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
 		if (data == null) {
