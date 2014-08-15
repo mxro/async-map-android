@@ -81,7 +81,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
-		executeStatementImmidiately(statement);
+		executeUpdateOrDeleteStatementImmidiately(statement);
 
 	}
 
@@ -102,7 +102,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		return data;
 	}
 
-	private void executeStatementImmidiately(SQLiteStatement statement) {
+	private void executeUpdateOrDeleteStatementImmidiately(SQLiteStatement statement) {
 		db.beginTransaction();
 
 		int rowsAffected = statement.executeUpdateDelete();
@@ -132,7 +132,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void removeSync(String key) {
 
-		executeStatementImmidiately(createRemoveStatement(key));
+		executeUpdateOrDeleteStatementImmidiately(createRemoveStatement(key));
 
 	}
 
