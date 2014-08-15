@@ -141,6 +141,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	@Override
 	public void removeSync(String key) {
 
+		System.out.println("remove "+key);
+		
 		executeUpdateOrDeleteStatementImmidiately(createRemoveStatement(key));
 
 	}
