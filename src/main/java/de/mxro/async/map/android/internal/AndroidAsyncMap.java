@@ -108,7 +108,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		int rowsAffected = statement.executeUpdateDelete();
 
 		if (rowsAffected != 1) {
-			throw new RuntimeException("No rows could be found for query.");
+			throw new RuntimeException("No rows could be found for query "+statement.toString());
 		}
 		
 		db.setTransactionSuccessful();
