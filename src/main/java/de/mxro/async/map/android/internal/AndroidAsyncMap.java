@@ -79,7 +79,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	public void putSync(String key, V value) {
 		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
 		
-		System.out.println("put "+key);
+		System.out.println(this+": Put "+key+" Value "+value);
 		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
@@ -127,7 +127,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	}
 
 	private SQLiteStatement createInsertStatement(String key, V value) {
-		String sql = "INSERT INTO " + conf.getTableName() + " ("+conf.getKeyColumnName()+","+conf.getValueColumnName()+") VALUES (?, ?)";
+		String sql = "INSERT OR REPLACE INTO " + conf.getTableName() + " ("+conf.getKeyColumnName()+","+conf.getValueColumnName()+") VALUES (?, ?)";
 		SQLiteStatement statement = db.compileStatement(sql);
 
 		statement.bindString(1, key);
