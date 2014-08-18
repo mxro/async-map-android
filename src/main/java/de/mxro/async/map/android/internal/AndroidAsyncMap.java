@@ -58,6 +58,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
+		if (ENABLE_LOG && data == null) {
+			System.out.println(this + ": getSync " + key + " retrieved null");
+		}
+		
 		if (data == null) {
 			return null;
 		}
@@ -65,6 +69,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		Object object = serializer.deserialize(SerializationJre
 				.createStreamSource(new ByteArrayInputStream(data)));
 
+		if (ENABLE_LOG) {
+			System.out.println(this + ": getSync " + key + " retrieved "+object);
+		}
+		
 		return (V) object;
 	}
 
@@ -81,7 +89,7 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
 
 		if (ENABLE_LOG) {
-			System.out.println(this + ": Put " + key + " Value " + value);
+			System.out.println(this + ": putSync " + key + " Value " + value);
 		}
 
 		SQLiteStatement statement = createInsertStatement(key, value);
