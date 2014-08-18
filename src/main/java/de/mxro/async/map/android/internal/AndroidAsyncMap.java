@@ -79,6 +79,8 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 	public void putSync(String key, V value) {
 		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
 		
+		System.out.println("put "+key);
+		
 		SQLiteStatement statement = createInsertStatement(key, value);
 
 		executeInsertStatementImmidiately(statement);
