@@ -199,7 +199,6 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 	@Override
 	public void performOperation(MapOperation operation) {
-		// none supported
 		if (operation instanceof ClearCacheOperation) {
 			SQLiteDatabase.releaseMemory();
 		}
