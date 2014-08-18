@@ -21,7 +21,7 @@ import de.mxro.serialization.jre.StreamSource;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
-	private final boolean ENABLE_LOG = true;
+	private final boolean ENABLE_LOG = false;
 
 	private final SQLiteConfiguration conf;
 
