@@ -58,10 +58,13 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
 		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
-		if (ENABLE_LOG && data == null) {
-			System.out.println(this + ": getSync " + key + " retrieved null");
+		if (ENABLE_LOG) {
+			if (data == null) {
+				System.out.println(this + ": getSync " + key
+						+ " retrieved null");
+			}
 		}
-		
+
 		if (data == null) {
 			return null;
 		}
@@ -70,9 +73,10 @@ public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 				.createStreamSource(new ByteArrayInputStream(data)));
 
 		if (ENABLE_LOG) {
-			System.out.println(this + ": getSync " + key + " retrieved "+object);
+			System.out.println(this + ": getSync " + key + " retrieved "
+					+ object);
 		}
-		
+
 		return (V) object;
 	}
 
