@@ -11,62 +11,60 @@ import de.mxro.serialization.jre.StreamSource;
 
 public class AsyncMapAndorid {
 
-	/**
-	 * The length of keys used by the engine.
-	 */
-	public static int KEY_LENGTH = 512;
+    /**
+     * The length of keys used by the engine.
+     */
+    public static int KEY_LENGTH = 512;
 
-	public static <V> AsyncMap<String, V> createMap(SQLiteConfiguration conf,
-			Serializer<StreamSource, StreamDestination> serializer,
-			SQLiteDatabase injectedDb) {
-		return new AndroidAsyncMap<V>(conf, serializer, injectedDb);
-	}
+    public static <V> AsyncMap<String, V> createMap(final SQLiteConfiguration conf,
+            final Serializer<StreamSource, StreamDestination> serializer, final SQLiteDatabase injectedDb) {
+        return new AndroidAsyncMap<V>(conf, serializer, injectedDb);
+    }
 
-	public static <V> AsyncMap<String, V> createMap(SQLiteConfiguration conf,
-			Serializer<StreamSource, StreamDestination> serializer) {
-		return createMap(conf, serializer, null);
-	}
+    public static <V> AsyncMap<String, V> createMap(final SQLiteConfiguration conf,
+            final Serializer<StreamSource, StreamDestination> serializer) {
+        return createMap(conf, serializer, null);
+    }
 
-	public static SQLiteConfiguration createDefaultConfiguration() {
-		return createDefaultConfiguration("cache.db");
-	}
-	
-	public static SQLiteConfiguration createDefaultConfiguration(final String databaseId) {
-		return new SQLiteConfiguration() {
+    public static SQLiteConfiguration createDefaultConfiguration() {
+        return createDefaultConfiguration("cache.db");
+    }
 
-			@Override
-			public String getValueColumnName() {
-				return "value";
-			}
+    public static SQLiteConfiguration createDefaultConfiguration(final String databaseId) {
+        return new SQLiteConfiguration() {
 
-			@Override
-			public String getTableName() {
-				return "data";
-			}
+            @Override
+            public String getValueColumnName() {
+                return "value";
+            }
 
-			@Override
-			public String getKeyColumnName() {
-				return "key";
-			}
+            @Override
+            public String getTableName() {
+                return "data";
+            }
 
-			@Override
-			public String getDatabasePath() {
-				return databaseId;
-			}
-		};
-	}
+            @Override
+            public String getKeyColumnName() {
+                return "key";
+            }
 
-	public static SQLiteDatabase assertDatabase(SQLiteConfiguration conf) {
-		SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(new File(conf.getDatabasePath()), null);
-		return db;
-	}
-	
-	public static void assertTable(SQLiteDatabase db, SQLiteConfiguration conf) {
+            @Override
+            public String getDatabasePath() {
+                return databaseId;
+            }
+        };
+    }
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName() + "("
-				+ conf.getKeyColumnName() + " VARCHAR("+String.valueOf(KEY_LENGTH)+") PRIMARY KEY, "
-				+ conf.getValueColumnName() + " BLOB)");
+    public static SQLiteDatabase assertDatabase(final File dbFile, final SQLiteConfiguration conf) {
+        final SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
+        return db;
+    }
 
-	}
+    public static void assertTable(final SQLiteDatabase db, final SQLiteConfiguration conf) {
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + conf.getTableName() + "(" + conf.getKeyColumnName() + " VARCHAR("
+                + String.valueOf(KEY_LENGTH) + ") PRIMARY KEY, " + conf.getValueColumnName() + " BLOB)");
+
+    }
 
 }
