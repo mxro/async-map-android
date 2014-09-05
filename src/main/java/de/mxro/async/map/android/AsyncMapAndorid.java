@@ -68,4 +68,12 @@ public class AsyncMapAndorid {
 
     }
 
+    public static final void setSQLiteDatabaseFactory(final Function<File, SQLiteDatabase> factory) {
+        if (factory == null) {
+            throw new IllegalArgumentException("Factory cannot be <null>.");
+        }
+
+        sqlLiteFactory = factory;
+    }
+
 }
