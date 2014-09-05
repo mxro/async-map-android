@@ -27,10 +27,6 @@ public class AsyncMapAndorid {
     }
 
     public static SQLiteConfiguration createDefaultConfiguration() {
-        return createDefaultConfiguration("cache.db");
-    }
-
-    public static SQLiteConfiguration createDefaultConfiguration(final String databaseId) {
         return new SQLiteConfiguration() {
 
             @Override
@@ -48,10 +44,6 @@ public class AsyncMapAndorid {
                 return "key";
             }
 
-            @Override
-            public String getDatabasePath() {
-                return databaseId;
-            }
         };
     }
 

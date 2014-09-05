@@ -2,7 +2,6 @@ package de.mxro.async.map.android.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,200 +20,181 @@ import de.mxro.serialization.jre.StreamSource;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
-	private final boolean ENABLE_LOG = false;
+    private final boolean ENABLE_LOG = false;
 
-	private final SQLiteConfiguration conf;
+    private final SQLiteConfiguration conf;
 
-	private final Serializer<StreamSource, StreamDestination> serializer;
+    private final Serializer<StreamSource, StreamDestination> serializer;
 
-	private final SQLiteDatabase injectedDb;
+    private final SQLiteDatabase db;
 
-	private SQLiteDatabase db;
+    @Override
+    public void put(final String key, final V value, final SimpleCallback callback) {
+        putSync(key, value);
 
-	@Override
-	public void put(String key, V value, SimpleCallback callback) {
-		putSync(key, value);
+        this.commit(callback);
 
-		this.commit(callback);
+    }
 
-	}
+    @Override
+    public void get(final String key, final ValueCallback<V> callback) {
+        callback.onSuccess(this.getSync(key));
+    }
 
-	@Override
-	public void get(String key, ValueCallback<V> callback) {
-		callback.onSuccess(this.getSync(key));
-	}
+    @Override
+    public void remove(final String key, final SimpleCallback callback) {
+        removeSync(key);
 
-	@Override
-	public void remove(String key, SimpleCallback callback) {
-		removeSync(key);
+        this.commit(callback);
 
-		this.commit(callback);
+    }
 
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public V getSync(final String key) {
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public V getSync(String key) {
+        final byte[] data = executeQueryImmidiately(createSelectStatement(), key);
 
-		byte[] data = executeQueryImmidiately(createSelectStatement(), key);
+        if (ENABLE_LOG) {
+            if (data == null) {
+                System.out.println(this + ": getSync " + key + " retrieved null");
+            }
+        }
 
-		if (ENABLE_LOG) {
-			if (data == null) {
-				System.out.println(this + ": getSync " + key
-						+ " retrieved null");
-			}
-		}
+        if (data == null) {
+            return null;
+        }
 
-		if (data == null) {
-			return null;
-		}
+        final Object object = serializer.deserialize(SerializationJre
+                .createStreamSource(new ByteArrayInputStream(data)));
 
-		Object object = serializer.deserialize(SerializationJre
-				.createStreamSource(new ByteArrayInputStream(data)));
+        if (ENABLE_LOG) {
+            System.out.println(this + ": getSync " + key + " retrieved " + object);
+        }
 
-		if (ENABLE_LOG) {
-			System.out.println(this + ": getSync " + key + " retrieved "
-					+ object);
-		}
+        return (V) object;
+    }
 
-		return (V) object;
-	}
+    private String createSelectStatement() {
+        final String sql = "SELECT " + conf.getKeyColumnName() + ", " + conf.getValueColumnName() + " FROM "
+                + conf.getTableName() + " WHERE " + conf.getKeyColumnName() + " = ?";
 
-	private String createSelectStatement() {
-		final String sql = "SELECT " + conf.getKeyColumnName() + ", "
-				+ conf.getValueColumnName() + " FROM " + conf.getTableName()
-				+ " WHERE " + conf.getKeyColumnName() + " = ?";
+        return sql;
+    }
 
-		return sql;
-	}
+    @Override
+    public void putSync(final String key, final V value) {
+        assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
 
-	@Override
-	public void putSync(String key, V value) {
-		assert key.length() <= AsyncMapAndorid.KEY_LENGTH;
+        if (ENABLE_LOG) {
+            System.out.println(this + ": putSync " + key + " Value " + value);
+        }
 
-		if (ENABLE_LOG) {
-			System.out.println(this + ": putSync " + key + " Value " + value);
-		}
+        final SQLiteStatement statement = createInsertStatement(key, value);
 
-		SQLiteStatement statement = createInsertStatement(key, value);
+        executeInsertStatementImmidiately(statement);
 
-		executeInsertStatementImmidiately(statement);
+    }
 
-	}
+    private byte[] executeQueryImmidiately(final String sql, final String key) {
 
-	private byte[] executeQueryImmidiately(String sql, String key) {
+        final Cursor query = db.query(conf.getTableName(),
+                new String[] { conf.getKeyColumnName(), conf.getValueColumnName() }, conf.getKeyColumnName() + "=?",
+                new String[] { key }, null, null, null);
+        if (query.getCount() == 0) {
+            return null;
+        }
 
-		Cursor query = db.query(
-				conf.getTableName(),
-				new String[] { conf.getKeyColumnName(),
-						conf.getValueColumnName() }, conf.getKeyColumnName()
-						+ "=?", new String[] { key }, null, null, null);
-		if (query.getCount() == 0) {
-			return null;
-		}
+        query.moveToFirst();
+        final byte[] data = query.getBlob(1);
+        query.close();
+        return data;
+    }
 
-		query.moveToFirst();
-		byte[] data = query.getBlob(1);
-		query.close();
-		return data;
-	}
+    private void executeUpdateOrDeleteStatementImmidiately(final SQLiteStatement statement) {
+        db.beginTransaction();
 
-	private void executeUpdateOrDeleteStatementImmidiately(
-			SQLiteStatement statement) {
-		db.beginTransaction();
+        final int rowsAffected = statement.executeUpdateDelete();
 
-		int rowsAffected = statement.executeUpdateDelete();
+        if (rowsAffected != 1) {
+            throw new RuntimeException("No rows could be found for query " + statement.toString());
+        }
 
-		if (rowsAffected != 1) {
-			throw new RuntimeException("No rows could be found for query "
-					+ statement.toString());
-		}
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 
-		db.setTransactionSuccessful();
-		db.endTransaction();
-	}
+    private void executeInsertStatementImmidiately(final SQLiteStatement statement) {
+        db.beginTransaction();
 
-	private void executeInsertStatementImmidiately(SQLiteStatement statement) {
-		db.beginTransaction();
+        statement.executeInsert();
 
-		statement.executeInsert();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
 
-		db.setTransactionSuccessful();
-		db.endTransaction();
-	}
+    private SQLiteStatement createInsertStatement(final String key, final V value) {
+        final String sql = "INSERT OR REPLACE INTO " + conf.getTableName() + " (" + conf.getKeyColumnName() + ","
+                + conf.getValueColumnName() + ") VALUES (?, ?)";
+        final SQLiteStatement statement = db.compileStatement(sql);
 
-	private SQLiteStatement createInsertStatement(String key, V value) {
-		String sql = "INSERT OR REPLACE INTO " + conf.getTableName() + " ("
-				+ conf.getKeyColumnName() + "," + conf.getValueColumnName()
-				+ ") VALUES (?, ?)";
-		SQLiteStatement statement = db.compileStatement(sql);
+        statement.bindString(1, key);
 
-		statement.bindString(1, key);
+        final ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
+        serializer.serialize(value, SerializationJre.createStreamDestination(os));
 
-		ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
-		serializer.serialize(value,
-				SerializationJre.createStreamDestination(os));
+        statement.bindBlob(2, os.toByteArray());
+        return statement;
+    }
 
-		statement.bindBlob(2, os.toByteArray());
-		return statement;
-	}
+    @Override
+    public void removeSync(final String key) {
 
-	@Override
-	public void removeSync(String key) {
+        executeUpdateOrDeleteStatementImmidiately(createRemoveStatement(key));
 
-		executeUpdateOrDeleteStatementImmidiately(createRemoveStatement(key));
+    }
 
-	}
+    private SQLiteStatement createRemoveStatement(final String key) {
+        final String sql = "DELETE FROM " + conf.getTableName() + " WHERE " + conf.getKeyColumnName() + " = ?";
+        final SQLiteStatement statement = db.compileStatement(sql);
 
-	private SQLiteStatement createRemoveStatement(String key) {
-		String sql = "DELETE FROM " + conf.getTableName() + " WHERE "
-				+ conf.getKeyColumnName() + " = ?";
-		SQLiteStatement statement = db.compileStatement(sql);
+        statement.bindString(1, key);
 
-		statement.bindString(1, key);
+        return statement;
+    }
 
-		return statement;
-	}
+    @Override
+    public void start(final SimpleCallback callback) {
 
-	@Override
-	public void start(SimpleCallback callback) {
-		if (injectedDb == null) {
-			db = SQLiteDatabase.openOrCreateDatabase(
-					new File(conf.getDatabasePath()), null);
-		} else {
-			db = injectedDb;
-		}
-		callback.onSuccess();
-	}
+        callback.onSuccess();
+    }
 
-	@Override
-	public void stop(SimpleCallback callback) {
-		if (injectedDb == null) {
-			db.close();
-		}
+    @Override
+    public void stop(final SimpleCallback callback) {
 
-		callback.onSuccess();
-	}
+        db.close();
 
-	@Override
-	public void commit(SimpleCallback callback) {
-		callback.onSuccess();
-	}
+        callback.onSuccess();
+    }
 
-	@Override
-	public void performOperation(MapOperation operation) {
-		if (operation instanceof ClearCacheOperation) {
-			SQLiteDatabase.releaseMemory();
-		}
-	}
+    @Override
+    public void commit(final SimpleCallback callback) {
+        callback.onSuccess();
+    }
 
-	public AndroidAsyncMap(SQLiteConfiguration conf,
-			Serializer<StreamSource, StreamDestination> serializer,
-			SQLiteDatabase injectedDb) {
-		super();
-		this.conf = conf;
-		this.serializer = serializer;
-		this.injectedDb = injectedDb;
-	}
+    @Override
+    public void performOperation(final MapOperation operation) {
+        if (operation instanceof ClearCacheOperation) {
+            SQLiteDatabase.releaseMemory();
+        }
+    }
+
+    public AndroidAsyncMap(final SQLiteConfiguration conf,
+            final Serializer<StreamSource, StreamDestination> serializer, final SQLiteDatabase db) {
+        super();
+        this.conf = conf;
+        this.serializer = serializer;
+        this.db = db;
+    }
 
 }
