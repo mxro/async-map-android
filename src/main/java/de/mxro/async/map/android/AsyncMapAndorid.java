@@ -5,6 +5,7 @@ import java.io.File;
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.internal.AndroidAsyncMap;
+import de.mxro.fn.Function;
 import de.mxro.serialization.Serializer;
 import de.mxro.serialization.jre.StreamDestination;
 import de.mxro.serialization.jre.StreamSource;
@@ -15,6 +16,14 @@ public class AsyncMapAndorid {
      * The length of keys used by the engine.
      */
     public static int KEY_LENGTH = 512;
+
+    private static Function<File, SQLiteDatabase> sqlLiteFactory = new Function<File, SQLiteDatabase>() {
+
+        @Override
+        public SQLiteDatabase apply(final File dbFile) {
+            return SQLiteDatabase.openOrCreateDatabase(dbFile, null);
+        }
+    };
 
     public static <V> AsyncMap<String, V> createMap(final SQLiteConfiguration conf,
             final Serializer<StreamSource, StreamDestination> serializer, final SQLiteDatabase injectedDb) {
@@ -48,7 +57,7 @@ public class AsyncMapAndorid {
     }
 
     public static SQLiteDatabase assertDatabase(final File dbFile, final SQLiteConfiguration conf) {
-        final SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbFile, null);
+        final SQLiteDatabase db = sqlLiteFactory.apply(dbFile);
         return db;
     }
 
