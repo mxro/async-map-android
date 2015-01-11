@@ -10,7 +10,7 @@ import org.robolectric.shadows.ShadowSQLiteDatabase;
 
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.Async;
-import de.mxro.async.Deferred;
+import de.mxro.async.Operation;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.jre.AsyncJre;
 import de.mxro.async.map.AsyncMap;
@@ -35,7 +35,7 @@ public class TestThatValuesCanBeReadAndWritten {
 				SerializationJre.newJavaSerializer(),
 				db);
 
-		AsyncJre.waitFor(new Deferred<Success>() {
+		AsyncJre.waitFor(new Operation<Success>() {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
@@ -55,7 +55,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		Assert.assertEquals(2, map.getSync("two"));
 		Assert.assertEquals(null, map.getSync("three"));
 
-		AsyncJre.waitFor(new Deferred<Success>() {
+		AsyncJre.waitFor(new Operation<Success>() {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
