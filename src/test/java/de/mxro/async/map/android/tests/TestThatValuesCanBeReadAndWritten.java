@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.AsyncCommon;
 import de.mxro.async.Operation;
 import de.mxro.async.callbacks.ValueCallback;
-import de.mxro.async.jre.AsyncJre;
+import de.mxro.async.jre.Async;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
@@ -35,7 +35,7 @@ public class TestThatValuesCanBeReadAndWritten {
 				SerializationJre.newJavaSerializer(),
 				db);
 
-		AsyncJre.waitFor(new Operation<Success>() {
+		Async.waitFor(new Operation<Success>() {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
@@ -55,7 +55,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		Assert.assertEquals(2, map.getSync("two"));
 		Assert.assertEquals(null, map.getSync("three"));
 
-		AsyncJre.waitFor(new Operation<Success>() {
+		Async.waitFor(new Operation<Success>() {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
