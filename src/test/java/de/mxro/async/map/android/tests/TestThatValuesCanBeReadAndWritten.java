@@ -38,7 +38,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		AsyncJre.waitFor(new Deferred<Success>() {
 
 			@Override
-			public void get(ValueCallback<Success> callback) {
+			public void apply(ValueCallback<Success> callback) {
 				map.start(Async.wrap(callback));
 			}
 		});
@@ -58,7 +58,7 @@ public class TestThatValuesCanBeReadAndWritten {
 		AsyncJre.waitFor(new Deferred<Success>() {
 
 			@Override
-			public void get(ValueCallback<Success> callback) {
+			public void apply(ValueCallback<Success> callback) {
 				map.stop(Async.wrap(callback));
 				db.close();
 			}
