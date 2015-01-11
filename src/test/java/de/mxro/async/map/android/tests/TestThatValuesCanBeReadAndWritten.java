@@ -9,7 +9,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSQLiteDatabase;
 
 import android.database.sqlite.SQLiteDatabase;
-import de.mxro.async.Async;
+import de.mxro.async.AsyncCommon;
 import de.mxro.async.Operation;
 import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.jre.AsyncJre;
@@ -39,7 +39,7 @@ public class TestThatValuesCanBeReadAndWritten {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
-				map.start(Async.wrap(callback));
+				map.start(AsyncCommon.wrap(callback));
 			}
 		});
 
@@ -59,7 +59,7 @@ public class TestThatValuesCanBeReadAndWritten {
 
 			@Override
 			public void apply(ValueCallback<Success> callback) {
-				map.stop(Async.wrap(callback));
+				map.stop(AsyncCommon.wrap(callback));
 				db.close();
 			}
 		});
