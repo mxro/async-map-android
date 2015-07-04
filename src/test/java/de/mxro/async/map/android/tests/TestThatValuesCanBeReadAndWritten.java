@@ -9,15 +9,15 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowSQLiteDatabase;
 
 import android.database.sqlite.SQLiteDatabase;
-import de.mxro.async.AsyncCommon;
-import de.mxro.async.Operation;
-import de.mxro.async.callbacks.ValueCallback;
-import de.mxro.async.jre.Async;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.fn.Success;
 import de.mxro.serialization.jre.SerializationJre;
+import delight.async.AsyncCommon;
+import delight.async.Operation;
+import delight.async.callbacks.ValueCallback;
+import delight.async.jre.Async;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)

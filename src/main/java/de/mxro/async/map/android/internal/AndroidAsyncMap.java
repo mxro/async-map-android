@@ -6,8 +6,6 @@ import java.io.ByteArrayOutputStream;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import de.mxro.async.callbacks.SimpleCallback;
-import de.mxro.async.callbacks.ValueCallback;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
@@ -17,6 +15,8 @@ import de.mxro.serialization.Serializer;
 import de.mxro.serialization.jre.SerializationJre;
 import de.mxro.serialization.jre.StreamDestination;
 import de.mxro.serialization.jre.StreamSource;
+import delight.async.callbacks.SimpleCallback;
+import delight.async.callbacks.ValueCallback;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
