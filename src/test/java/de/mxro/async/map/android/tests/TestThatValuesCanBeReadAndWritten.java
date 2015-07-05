@@ -1,5 +1,11 @@
 package de.mxro.async.map.android.tests;
 
+import delight.async.AsyncCommon;
+import delight.async.Operation;
+import delight.async.callbacks.ValueCallback;
+import delight.async.jre.Async;
+import delight.functional.Success;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -11,11 +17,6 @@ import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.AsyncMapAndorid;
 import de.mxro.async.map.android.SQLiteConfiguration;
 import de.mxro.serialization.jre.SerializationJre;
-import delight.async.AsyncCommon;
-import delight.async.Operation;
-import delight.async.callbacks.ValueCallback;
-import delight.async.jre.Async;
-import delight.functional.Success;
 import junit.framework.Assert;
 
 @RunWith(RobolectricTestRunner.class)

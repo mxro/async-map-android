@@ -1,5 +1,8 @@
 package de.mxro.async.map.android.internal;
 
+import delight.async.callbacks.SimpleCallback;
+import delight.async.callbacks.ValueCallback;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
@@ -15,8 +18,6 @@ import de.mxro.serialization.Serializer;
 import de.mxro.serialization.jre.SerializationJre;
 import de.mxro.serialization.jre.StreamDestination;
 import de.mxro.serialization.jre.StreamSource;
-import delight.async.callbacks.SimpleCallback;
-import delight.async.callbacks.ValueCallback;
 
 public class AndroidAsyncMap<V> implements AsyncMap<String, V> {
 
