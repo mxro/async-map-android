@@ -5,7 +5,6 @@ import java.io.File;
 import android.database.sqlite.SQLiteDatabase;
 import de.mxro.async.map.AsyncMap;
 import de.mxro.async.map.android.internal.AndroidAsyncMap;
-import de.mxro.fn.Function;
 import de.mxro.serialization.Serializer;
 import de.mxro.serialization.jre.StreamDestination;
 import de.mxro.serialization.jre.StreamSource;
