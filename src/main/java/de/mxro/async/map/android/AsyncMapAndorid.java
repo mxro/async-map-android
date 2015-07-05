@@ -1,5 +1,7 @@
 package de.mxro.async.map.android;
 
+import delight.functional.Function;
+
 import java.io.File;
 
 import android.database.sqlite.SQLiteDatabase;
