@@ -1,3 +1,7 @@
+## MOVED
+
+This project has moved to [javadelight/delight-keyvalue-android](https://github.com/javadelight/delight-keyvalue-android).
+
 async-map-android
 =================
 
